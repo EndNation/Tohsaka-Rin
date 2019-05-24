@@ -42,7 +42,7 @@ c.on("message", async m => {
 
     if (cmd === "kick")
     {
-        if (!m.member.permissions.hasPermission("KICK_MEMBERS"))
+        if (!m.member.permissions.hasPermission("KICK_MEMBERS", false, true, true))
         {
             return m.reply("Sorry but you do not have the permissions to use this command...");
         }
@@ -72,7 +72,7 @@ c.on("message", async m => {
 
     if (cmd === "ban")
     {
-        if (!m.member.permissions.hasPermission("BAN_MEMBERS"))
+        if (!m.member.permissions.hasPermission("BAN_MEMBERS", false, true, true))
         {
             return m.reply("Sorry, you do not have permissions to use this!");
         }
@@ -102,7 +102,7 @@ c.on("message", async m => {
 
     if (cmd === "purge")
     {
-        if (m.member.permissions.hasPermission("MANAGE_MESSAGES") && m.member.permissions.hasPermission("VIEW_AUDIT_LOG"))
+        if (m.member.permissions.hasPermission("MANAGE_MESSAGES", false, true, true) && m.member.permissions.hasPermission("VIEW_AUDIT_LOG", false, true, true))
         {
             const delCount = parseInt(args[0], 10);
 
@@ -114,6 +114,31 @@ c.on("message", async m => {
             const fetched = await m.channel.fetchMessages({limit: delCount});
             m.channel.bulkDelete(fetched).catch(e => m.reply(`Could not delete messages due to: ${e}`));
         }
+    }
+
+    if (cmd === "help")
+    {
+        const devCmds = "**__Developer Commands:__**\n**rin!shutdown** - Shuts down the bot if the bot is being runned locally.";
+        const modCmds = "**__Server Management Commands:__**\n**rin!kick __@user__ __reason__** - Kicks the mentioned user for the reason specified.\n**rin!ban __@user__ __reason__** - Bans the mentioned user for the reason specified.\n**rin!purge __(no of msgs to be deleted)__** - Deletes the number of messages specified in the channel.";
+        const cmds = "**__General Commands:__**\n**rin!help** - Shows all available commands for the bot.\n**rin!ping** - Pong.";
+        const embed = {
+            "description": "**Tohsaka Rin commands:**\n\n" + devCmds + "\n\n" + modCmds + "\n\n" + cmds,
+            "color": 6308886,
+            "timestamp": new Date(),
+            "footer": {
+              //"icon_url": `${c.user.avatarURL}`,
+              "text": "Emiya Shirou is my servant"
+            },
+            "thumbnail": {
+              "url": `${c.user.avatarURL}`
+            },
+            "author": {
+              "name": "Tohsaka Rin - Help"
+              //"icon_url": `${c.user.avatarURL}`
+            }
+        };
+
+        m.reply({embed});
     }
 });
 
