@@ -1,0 +1,14 @@
+{
+  "name": "tohsaka-rin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "TheDarkSid3r",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.5.0"
+  }
+}
