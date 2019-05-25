@@ -4,7 +4,7 @@ const c = new discord.Client();
 
 const config = require("./config.json");
 
-const version = "1.1.0";
+const version = "1.1.1";
 
 function clean(t)
 {
@@ -56,6 +56,10 @@ function changelogs(curPage)
           {
             "name": "Version 1.1.0",
             "value": "- Added rin!changelogs\n- Added rin!about"
+          },
+          {
+              "name":   "Version 1.1.1",
+              "value":  "- Fixed rin!about"
           }
         ]
     };
@@ -79,7 +83,10 @@ c.on("message", async m => {
 
     if (cmd === "about")
     {
-        const msg = `**Thank you for entertaining Tohsaka!**\n\n**Tohsaka Rin Version:** ${version}\n\n\nTohsaka Rin is a discord bot owned by **${c.users.get(config.devid).username}#${c.users.get(config.devid).discriminator}** and designed for **${c.guilds.get(581326178925674546).name}** guild **only**.Tohsaka Rin is currently operating in **${c.guilds.size}** guilds which has **${c.users.size}** users. You cannot invite Tohsaka Rin to your own server.\n\nTohsaka Rin is an open-source project. You can check our the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the official server at https://discord.gg/hMnStJE`;
+        const gid = c.guilds.get(config.officialguildid).id;
+        const guild = c.guilds.get(`${gid}`).name;
+
+        const msg = `**Thank you for entertaining Tohsaka!**\n\n**Tohsaka Rin Version:** ${version}\n\n\nTohsaka Rin is a discord bot owned by **${c.users.get(config.devid).username}#${c.users.get(config.devid).discriminator}** and designed for **${guild}** guild **only**.Tohsaka Rin is currently operating in **${c.guilds.size}** guilds which has **${c.users.size}** users. You cannot invite Tohsaka Rin to your own server.\n\nTohsaka Rin is an open-source project. You can check our the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the official server at https://discord.gg/hMnStJE`;
         m.channel.send(msg);
     }
 
