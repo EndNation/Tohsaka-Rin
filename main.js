@@ -4,6 +4,18 @@ const c = new discord.Client();
 
 const config = require("./config.json");
 
+function clean(t)
+{
+    if (typeof(t) === "string")
+    {
+        return t.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    }
+    else
+    {
+        return t;
+    }
+}
+
 c.on("ready", () => {
     console.log(`Bot is now ready...`);
     c.user.setActivity("the Holy Grail War", {type: "WATCHING"});
@@ -29,6 +41,30 @@ c.on("message", async m => {
         const m1 = await m.channel.send("Ping...");
 
         m1.edit(`Pong! Latency is ${m1.createdTimestamp - m.createdTimestamp} ms. API Latency is ${Math.round(c.ping)}ms.`);
+    }
+
+    if (cmd === "eval")
+    {
+        if (m.author.id === config.devid)
+        {
+            try
+            {
+                const code = args.join(" ");
+
+                let evaled = eval(code);
+
+                if (typeof evaled != "string")
+                {
+                    evaled = require("util").inspect(evaled);
+                }
+
+                m.channel.send(clean(evaled), {code: "xl"});
+            }
+            catch (e)
+            {
+                console.log(`[ERROR] ${clean(e)}`);
+            }
+        }
     }
 
     if (cmd === "shutdown")
@@ -118,7 +154,7 @@ c.on("message", async m => {
 
     if (cmd === "help")
     {
-        const devCmds = "**__Developer Commands:__**\n**rin!shutdown** - Shuts down the bot if the bot is being runned locally.";
+        const devCmds = "**__Developer Commands:__**\n**rin!shutdown** - Shuts down the bot if the bot is being runned locally.\n**rin!eval** - Evaluates the arguments given.";
         const modCmds = "**__Server Management Commands:__**\n**rin!kick __@user__ __reason__** - Kicks the mentioned user for the reason specified.\n**rin!ban __@user__ __reason__** - Bans the mentioned user for the reason specified.\n**rin!purge __(no of msgs to be deleted)__** - Deletes the number of messages specified in the channel.";
         const cmds = "**__General Commands:__**\n**rin!help** - Shows all available commands for the bot.\n**rin!ping** - Pong.";
         const embed = {
