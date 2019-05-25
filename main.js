@@ -4,6 +4,8 @@ const c = new discord.Client();
 
 const config = require("./config.json");
 
+const version = "1.1.0";
+
 function clean(t)
 {
     if (typeof(t) === "string")
@@ -29,6 +31,38 @@ c.on("guildDelete", g => {
     console.log(`Left A Guild: ${g.name} (ID: ${g.id})`);
 });
 
+function changelogs(curPage)
+{
+    const embed = {
+        "description": `**Current Version:** ${version}`,
+        "color": 3604232,
+        "timestamp": new Date(),
+        "footer": {
+          "icon_url": c.user.avatarURL,
+          "text": "Do we really need a footer?"
+        },
+        "thumbnail": {
+          "url": c.user.avatarURL
+        },
+        "author": {
+          "name": "Changelogs",
+          "icon_url": c.user.avatarURL
+        },
+        "fields": [
+          {
+            "name": "Version 1.0.0",
+            "value": "God knows what was added and changed here. Long lost in history"
+          },
+          {
+            "name": "Version 1.1.0",
+            "value": "- Added rin!changelogs\n- Added rin!about"
+          }
+        ]
+    };
+
+    return embed;
+}
+
 c.on("message", async m => {
     if (m.author.bot) return;
     if (m.content.indexOf(config.prefix) !== 0) return;
@@ -41,6 +75,94 @@ c.on("message", async m => {
         const m1 = await m.channel.send("Ping...");
 
         m1.edit(`Pong! Latency is ${m1.createdTimestamp - m.createdTimestamp} ms. API Latency is ${Math.round(c.ping)}ms.`);
+    }
+
+    if (cmd === "about")
+    {
+        const msg = `**Thank you for entertaining Tohsaka!**\n\n**Tohsaka Rin Version:** ${version}\n\n\nTohsaka Rin is a discord bot owned by **${c.users.get(config.devid).username}#${c.users.get(config.devid).discriminator}** and designed for **${c.guilds.get(581326178925674546).name}** guild **only**.Tohsaka Rin is currently operating in **${c.guilds.size}** guilds which has **${c.users.size}** users. You cannot invite Tohsaka Rin to your own server.\n\nTohsaka Rin is an open-source project. You can check our the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the official server at https://discord.gg/hMnStJE`;
+        m.channel.send(msg);
+    }
+
+    if (cmd === "changelogs")
+    {
+        /**const embed = {
+            "description": `**Current Version:** ${version}`,
+            "color": 3604232,
+            "timestamp": new Date(),
+            "footer": {
+              "icon_url": c.user.avatarURL,
+              "text": "Do we really need a footer?"
+            },
+            "thumbnail": {
+              "url": c.user.avatarURL
+            },
+            "author": {
+              "name": "Changelogs",
+              "icon_url": c.user.avatarURL
+            },
+            "fields": [
+              {
+                "name": "Version 1.0.0",
+                "value": "God knows what was added and changed here. Long lost in history"
+              },
+              {
+                "name": "Version 1.1.0",
+                "value": "- Added rin!changelogs\n- Added rin!about"
+              }
+            ]
+        };
+
+        m.channel.send({embed});*/
+        const maxPages = 1;
+        const minPages = 1;
+        const curPage = 1;
+
+        var embed = changelogs(curPage);
+        var l = await m.channel.send({embed});
+
+        l.react("◀").then(() => l.react("❌"))
+                    .then(() => l.react("▶"))
+                    .catch(() => console.error("One of the emojis failed to react."));
+
+        const filter = (r, u) => {
+            return ( r.emoji.name === "◀" || 
+            r.emoji.name === "▶" || 
+            r.emoji.name === "❌") && u.id === m.author.id;
+        };
+
+        const collector = l.createReactionCollector(filter, {time: 15000});
+
+        collector.on('collect', (r, rC) => {
+            if (r.emoji.name === "◀")
+            {
+                if (curPage > minPages)
+                {
+                    curPage = curPage - 1;
+                }
+                else
+                {
+                    embed = changelogs(curPage);
+                    l.edit({embed});
+                }
+            }
+            else if (r.emoji.name === "▶")
+            {
+                if (curPage < maxPages)
+                {
+                    curPage = curPage + 1;
+                }
+                else
+                {
+                    embed = changelogs(curPage);
+                    l.edit({embed});
+                }
+            }
+            else
+            {
+                
+            }
+            collector.stop();
+        });
     }
 
     if (cmd === "eval")
@@ -156,7 +278,7 @@ c.on("message", async m => {
     {
         const devCmds = "**__Developer Commands:__**\n**rin!shutdown** - Shuts down the bot if the bot is being runned locally.\n**rin!eval** - Evaluates the arguments given.";
         const modCmds = "**__Server Management Commands:__**\n**rin!kick __@user__ __reason__** - Kicks the mentioned user for the reason specified.\n**rin!ban __@user__ __reason__** - Bans the mentioned user for the reason specified.\n**rin!purge __(no of msgs to be deleted)__** - Deletes the number of messages specified in the channel.";
-        const cmds = "**__General Commands:__**\n**rin!help** - Shows all available commands for the bot.\n**rin!ping** - Pong.";
+        const cmds = "**__General Commands:__**\n**rin!help** - Shows all available commands for the bot.\n**rin!ping** - Pong.\n**rin!changelogs** - Shows all the changes made to the bot.\n**rin!about** - The abouts of the bot";
         const embed = {
             "description": "**Tohsaka Rin commands:**\n\n" + devCmds + "\n\n" + modCmds + "\n\n" + cmds,
             "color": 6308886,
