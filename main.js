@@ -42,7 +42,7 @@ c.on("message", async m => {
 
     if (cmd === "kick")
     {
-        if (!m.member.permissions.hasPermission("KICK_MEMBERS", false, true, true))
+        if (!m.member.permissions.hasPermissions("KICK_MEMBERS", false))
         {
             return m.reply("Sorry but you do not have the permissions to use this command...");
         }
@@ -72,7 +72,7 @@ c.on("message", async m => {
 
     if (cmd === "ban")
     {
-        if (!m.member.permissions.hasPermission("BAN_MEMBERS", false, true, true))
+        if (!m.member.permissions.hasPermissions("BAN_MEMBERS", false))
         {
             return m.reply("Sorry, you do not have permissions to use this!");
         }
@@ -102,7 +102,7 @@ c.on("message", async m => {
 
     if (cmd === "purge")
     {
-        if (m.member.permissions.hasPermission("MANAGE_MESSAGES", false, true, true) && m.member.permissions.hasPermission("VIEW_AUDIT_LOG", false, true, true))
+        if (m.member.permissions.hasPermissions("MANAGE_MESSAGES", false) && m.member.permissions.hasPermissions("VIEW_AUDIT_LOG", false))
         {
             const delCount = parseInt(args[0], 10);
 
