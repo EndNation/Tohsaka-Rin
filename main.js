@@ -34,7 +34,7 @@ c.on("guildDelete", g => {
 function changelogs(curPage)
 {
     const embed = {
-        "description": `**Current Version:** ${version}`,
+        "description": `**Current Version:** ${version}\nYou can also read the changes at the **README.md** file found in the github repository.`,
         "color": 3604232,
         "timestamp": new Date(),
         "footer": {
