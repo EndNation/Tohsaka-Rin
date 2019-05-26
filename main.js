@@ -4,7 +4,7 @@ const c = new discord.Client();
 
 const config = require("./config.json");
 
-const version = "1.1.1";
+const version = "1.2.0";
 
 function clean(t)
 {
@@ -60,6 +60,10 @@ function changelogs(curPage)
           {
               "name":   "Version 1.1.1",
               "value":  "- Fixed rin!about"
+          },
+          {
+              "name":   "Version 1.2.0",
+              "vaue":   "- Made the bot log to <#581396935957676033> when Purge command executed."
           }
         ]
     };
@@ -278,6 +282,39 @@ c.on("message", async m => {
 
             const fetched = await m.channel.fetchMessages({limit: delCount});
             m.channel.bulkDelete(fetched).catch(e => m.reply(`Could not delete messages due to: ${e}`));
+
+            const embed = {
+                "color": 6122639,
+                "timestamp": new Date(),
+                "footer": {
+                  "icon_url": c.user.avatarURL,
+                  "text": "Just logging the purge..."
+                },
+                "thumbnail": {
+                  "url": c.user.avatarURL
+                },
+                "author": {
+                  "name": "Purge",
+                  "icon_url": c.user.avatarURL
+                },
+                "fields": [
+                  {
+                    "name": "Amount Of Messages Deleted:",
+                    "value": `${delCount}`
+                  },
+                  {
+                    "name": "Channel Where Messages Were Deleted:",
+                    "value": `<#${m.channel.id}>`
+                  },
+                  {
+                    "name": "Command Executed By:",
+                    "value": `<@${m.author.id}>`
+                  }
+                ]
+            };
+
+            const j = c.channels.get("581396935957676033");
+            j.send(`${m.author.tag}`, {embed});
         }
     }
 
