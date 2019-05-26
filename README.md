@@ -1,5 +1,4 @@
 # Tohsaka Rin
-=====
 
 ## Changes:
 -----
