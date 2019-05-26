@@ -1,8 +1,8 @@
 # Tohsaka Rin
-=============
+=====
 
 ## Changes:
------------
+-----
 
 ### Latest Version (v1.2.0):
 -   Made the bot log to a channel when Purge command executed.
