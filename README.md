@@ -3,10 +3,14 @@
 ## Changes:
 -----
 
-### Latest Version (v1.2.0):
--   Made the bot log to a channel when Purge command executed.
+### Latest Version (v1.3.0):
+-   Added bot logging to all moderation commands.
+-   Added shards to increase performance of the bot
 
 ### Other Versions:
+
+#### v1.2.0:
+-   Made the bot log to a channel when Purge command executed.
 
 #### v1.1.1
 -   Fixed rin!about
