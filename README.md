@@ -3,11 +3,14 @@
 ## Changes:
 -----
 
-### Latest Version (v1.3.0):
--   Added bot logging to all moderation commands.
--   Added shards to increase performance of the bot
+### Latest Version (v1.4.0):
+-   Added restart command. Only for developer.
 
 ### Other Versions:
+
+### v1.4.0:
+-   Added bot logging to all moderation commands.
+-   Added shards to increase performance of the bot
 
 #### v1.2.0:
 -   Made the bot log to a channel when Purge command executed.

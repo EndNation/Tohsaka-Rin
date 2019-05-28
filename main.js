@@ -10,18 +10,25 @@ const sm = new ShardingManager('./bot.js', {
 sm.spawn(this.totalShards).catch(console.error);
 sm.on('launch', s => console.log(`[SHARD] Launched shard ${s.id}/${sm.totalShards - 1}`));
 
+function getPartOfString(string, beginIndex, endIndex)
+{
+    return string.substring(beginIndex, endIndex).toLowerCase();
+}
+
 sm.on("message", (s, m) => {
-    const yee = m.toLowerCase();
-
-    if (yee.substring(1, 7)=== "restart")
+    console.log(`[SM] Message Received: ${m} , Type: ${typeof(m)}`);
+    if (typeof(m) === "string")
     {
-        const devid = yee.substring(7);
-
-        if (devid === config.devid)
+        if (getPartOfString(m, 0, 7) === "restart")
         {
-            sm.broadcast("log_restart");
-            sm.respawnAll(5000, 1000, true, s.id).catch(console.error);
-            sm.broadcast("restart_success");
+            const devid = getPartOfString(m, 7).replace(`(`, ``).replace(`)`, ``).trim();
+
+            console.log(`[SM] Restart command executed by ${devid}`);
+
+            if (devid === config.devid)
+            {
+                sm.respawnAll(1000, 100, true, s.id).catch(console.error);
+            }
         }
     }
 });
