@@ -4,7 +4,7 @@ const config = require("./config.json");
 const sm = new ShardingManager('./bot.js', {
     token: process.env.token,
     totalShards: "auto",
-    respawn: false,
+    respawn: true,
 });
 
 sm.spawn(this.totalShards).catch(console.error);
