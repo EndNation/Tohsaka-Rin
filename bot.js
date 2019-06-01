@@ -156,8 +156,8 @@ c.on("message", async m => {
           const gid = c.guilds.get(config.officialguildid).id;
           const guild = c.guilds.get(`${gid}`).name;
 
-          const totalGuilds = c.guilds.size();
-          const members = c.users.size();
+          const totalGuilds = c.guilds.size;
+          const members = c.users.size;
 
           const msg = `**Thank you for entertaining Tohsaka!**
                       \n
@@ -256,7 +256,6 @@ c.on("message", async m => {
       {
           if (m.author.id === config.devid)
           {
-            m.reply(`Restarting...`);
             c.destroy();
             process.exit(0);
           }
