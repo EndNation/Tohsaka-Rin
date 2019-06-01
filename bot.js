@@ -20,12 +20,12 @@ function clean(t)
 }
 
 c.on("ready", () => {
-    console.log(`Bot (Shard ID: ${c.shard.id}) is now ready...`);
+    console.log(`Bot is now ready...`);
     c.user.setActivity("the Holy Grail War", {type: "WATCHING"});
 });
 
 c.on("disconnect", () => {
-  console.log(`Bot (Shard ID: ${c.shard.id}) disconnected from Discord...`);
+  console.log(`Bot  disconnected from Discord...`);
 });
 
 c.on("guildCreate", g => {
@@ -107,28 +107,28 @@ function changelogs(curPage)
         },
         "fields": [
           {
-            "name": "Version 1.0.0",
-            "value": "God knows what was added and changed here. Long lost in history"
+            "name": "Version 1.4.0",
+            "value":  "- Added restart command. Only for developer."
+          },
+          {
+            "name":   "Version 1.3.0",
+            "value":  "- Added bot logging to all moderation commands.\n- Added shards to increase performance of the bot"
+          },
+          {
+            "name":   "Version 1.2.0",
+            "value":   "- Made the bot log to <#581396935957676033> when Purge command executed."
+          },
+          {
+            "name":   "Version 1.1.1",
+            "value":  "- Fixed rin!about"
           },
           {
             "name": "Version 1.1.0",
             "value": "- Added rin!changelogs\n- Added rin!about"
           },
           {
-              "name":   "Version 1.1.1",
-              "value":  "- Fixed rin!about"
-          },
-          {
-              "name":   "Version 1.2.0",
-              "value":   "- Made the bot log to <#581396935957676033> when Purge command executed."
-          },
-          {
-              "name":   "Version 1.3.0",
-              "value":  "- Added bot logging to all moderation commands.\n- Added shards to increase performance of the bot"
-          },
-          {
-            "name": "Version 1.4.0",
-            "value":  "- Added restart command. Only for developer."
+            "name": "Version 1.0.0",
+            "value": "God knows what was added and changed here. Long lost in history"
           }
         ]
     };
@@ -155,6 +155,21 @@ c.on("message", async m => {
       {
           const gid = c.guilds.get(config.officialguildid).id;
           const guild = c.guilds.get(`${gid}`).name;
+
+          const totalGuilds = c.guilds.size();
+          const members = c.users.size();
+
+          const msg = `**Thank you for entertaining Tohsaka!**
+                      \n
+                      \n**Tohsaka Rin Version:** ${version}
+                      \n
+                      \nTohsaka Rin is a discord bot owned by **${c.users.get(config.devid).username}#${c.users.get(config.devid).discriminator}** and designed for **${guild}** guild **only**.
+                      Tohsaka Rin is currently operating in **${totalGuilds}** guilds which has **${members}** users. 
+                      You cannot invite Tohsaka Rin to your own server.
+                      \n
+                      \nTohsaka Rin is an open-source project. 
+                      You can check our the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the main server at https://discord.gg/hMnStJE`;
+          m.channel.send(msg);
 
           c.shard.fetchClientValues('guilds.size').then(res => {
               const totalGuilds = res.reduce((p, v) => p + v, 0);//res[0].reduce((p, gc) => p + gc, 0);

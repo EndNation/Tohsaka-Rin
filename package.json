@@ -4,7 +4,15 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "startShards": "node botShard.js",
+    "start":  "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EndNation/Tohsaka-Rin"
+  },
+  "engines": {
+    "node": "10.15.3"
   },
   "author": "TheDarkSid3r",
   "license": "ISC",
