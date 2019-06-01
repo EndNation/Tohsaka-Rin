@@ -5,7 +5,7 @@ const c = new discord.Client();
 const config = require("./config.json");
 const blists = require("./bannedlists.json");
 
-const version = "1.4.0";
+const version = "1.5.0";
 
 function clean(t)
 {
@@ -270,7 +270,7 @@ c.on("message", async m => {
           };
 
           const collector = l.createReactionCollector(filter, {time: 15000});
-            
+
           collector.on('collect', (r, rC) => {
               if (r.emoji.name === "◀")
               {
