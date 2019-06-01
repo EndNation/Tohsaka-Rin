@@ -75,7 +75,7 @@ c.on("guildBanAdd", (g, u) => {
     }
 });
 
-c.on("guildMemberAdd", (m) => {
+/**c.on("guildMemberAdd", (m) => {
     const bannedUsernames = blists.bannedUsernames;
     const totalBannedNames = blists.totalBannedNames;
 
@@ -86,7 +86,7 @@ c.on("guildMemberAdd", (m) => {
             console.log(`Ban ${m.user.username}`);
         }
     }
-});
+});*/
 
 function changelogs(curPage)
 {
@@ -170,15 +170,6 @@ c.on("message", async m => {
                       \nTohsaka Rin is an open-source project. 
                       You can check our the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the main server at https://discord.gg/hMnStJE`;
           m.channel.send(msg);
-
-          c.shard.fetchClientValues('guilds.size').then(res => {
-              const totalGuilds = res.reduce((p, v) => p + v, 0);//res[0].reduce((p, gc) => p + gc, 0);
-              c.shard.fetchClientValues('users.size').then(ree => {
-                const members = ree.reduce((p, l) => p + l, 0);
-                const msg = `**Thank you for entertaining Tohsaka!**\n\n**Tohsaka Rin Version:** ${version}\n\n\nThere is a total of ${c.shard.count} shards!\n\nTohsaka Rin is a discord bot owned by **${c.users.get(config.devid).username}#${c.users.get(config.devid).discriminator}** and designed for **${guild}** guild **only**.Tohsaka Rin is currently operating in **${totalGuilds}** guilds which has **${members}** users. You cannot invite Tohsaka Rin to your own server.\n\nTohsaka Rin is an open-source project. You can check our the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the official server at https://discord.gg/hMnStJE`;
-                m.channel.send(msg);
-              });
-          });
       }
 
       if (cmd === "changelogs")
@@ -261,13 +252,13 @@ c.on("message", async m => {
 
 
 
-      if (cmd === "restart")
+      if (cmd === "shutdown")
       {
           if (m.author.id === config.devid)
           {
-            c.shard.send('restart(' + config.devid + ")");
-              //c.destroy();
-              //process.exit(0);
+            m.reply(`Restarting...`);
+            c.destroy();
+            process.exit(0);
           }
       }
 
@@ -451,7 +442,7 @@ c.on("message", async m => {
 
       if (cmd === "help")
       {
-          const devCmds = "**__Developer Commands:__**\n**rin!restart** - Restarts all of the bot shards.\n**rin!eval** - Evaluates the arguments given.";
+          const devCmds = "**__Developer Commands:__**\n**rin!shutdown** - Restarts all of the bot shards.\n**rin!eval** - Evaluates the arguments given.";
           const modCmds = "**__Server Management Commands:__**\n**rin!kick __@user__ __reason__** - Kicks the mentioned user for the reason specified.\n**rin!ban __@user__ __reason__** - Bans the mentioned user for the reason specified.\n**rin!purge __(no of msgs to be deleted)__** - Deletes the number of messages specified in the channel.";
           const cmds = "**__General Commands:__**\n**rin!help** - Shows all available commands for the bot.\n**rin!ping** - Pong.\n**rin!changelogs** - Shows all the changes made to the bot.\n**rin!about** - The abouts of the bot";
           const embed = {
