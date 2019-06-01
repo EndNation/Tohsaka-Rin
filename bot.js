@@ -75,22 +75,73 @@ c.on("guildBanAdd", (g, u) => {
     }
 });
 
-/**c.on("guildMemberAdd", (m) => {
-    const bannedUsernames = blists.bannedUsernames;
-    const totalBannedNames = blists.totalBannedNames;
+c.on("guildMemberAdd", (m) => {
+  const bannedUsernames = blists.bannednames;
+  const totalBannedNames = blists.totalBannedNames;
 
-    for (var i = 0; i < totalBannedNames; i++)
-    {
-        if (m.user.username.includes(bannedUsernames[i]))
-        {
-            console.log(`Ban ${m.user.username}`);
-        }
-    }
-});*/
+  for (var i = 0; i < totalBannedNames; i++)
+  {
+      if (m.user.username.includes(bannedUsernames[i]))
+      {
+          const u = m.user;
+
+          const embed = {
+            "description": "Looks like someone got the ban hammer!",
+            "color": 16711684,
+            "timestamp": new Date(),
+            "footer": {
+              "icon_url": `${c.user.avatarURL}`,
+              "text": "Oopsies..."
+            },
+            "thumbnail": {
+              "url": `${c.user.avatarURL}`
+            },
+            "author": {
+              "name": "Ban",
+              "icon_url": `${c.user.avatarURL}`
+            },
+            "fields": [
+              {
+                "name": "Ban Target:",
+                "value": `${m.user.tag}`
+              },
+              {
+                "name": "Reason For Ban:",
+                "value": `Banned Username.`
+              },
+              {
+                "name": "Command Executor:",
+                "value": `<@${c.user.id}>`
+              }
+            ]
+        };
+
+          m.guild.ban(u, {reason: "Banned Username."}).then(gm => {
+            const j = c.channels.get(config.logchannel);
+            j.send({embed});
+          }).catch(e => console.error(`Sorry, I could not ban because of: ${e}`));
+      }
+  }
+  const botRole = m.guild.roles.get(config.botRoleID);
+  const memberRole = m.guild.roles.get(config.memberRoleID);
+
+  if (m.user.bot)
+  {
+    m.addRole(botRole).catch(e => console.error(`Error occured while adding role, ${e}`));
+  }
+  else
+  {
+    m.addRole(memberRole).catch(e => console.error(`Error occured while adding role, ${e}`));
+  }
+});
 
 function changelogs(curPage)
 {
-    const embed = {
+  let embed = null;
+
+  if (curPage == 1)
+  {
+    embed = {
         "description": `**Current Version:** ${version}\nYou can also read the changes at [here](https://github.com/EndNation/Tohsaka-Rin#changes).`,
         "color": 3604232,
         "timestamp": new Date(),
@@ -132,8 +183,34 @@ function changelogs(curPage)
           }
         ]
     };
+  }
+  else if (curPage == 0)
+  {
+    embed = {
+      "description": `**Current Version:** ${version}\nYou can also read the changes at [here](https://github.com/EndNation/Tohsaka-Rin#changes).`,
+      "color": 3604232,
+      "timestamp": new Date(),
+      "footer": {
+        "icon_url": c.user.avatarURL,
+        "text": "Do we really need a footer?"
+      },
+      "thumbnail": {
+        "url": c.user.avatarURL
+      },
+      "author": {
+        "name": "Changelogs",
+        "icon_url": c.user.avatarURL
+      },
+      "fields": [
+        {
+          "name": "Version 1.5.0",
+          "value":  "- Added pages to changelogs and some more moderation on member joining the guild."
+        }
+      ]
+    };
+  }
 
-    return embed;
+  return embed != null ? embed : "Something went wrong";
 }
 
 c.on("message", async m => {
@@ -175,8 +252,9 @@ c.on("message", async m => {
       if (cmd === "changelogs")
       {
           const maxPages = 1;
-          const minPages = 1;
-          const curPage = 1;
+          const minPages = 0;
+
+          let curPage = 0;
 
           var embed = changelogs(curPage);
           var l = await m.channel.send({embed});
@@ -192,7 +270,7 @@ c.on("message", async m => {
           };
 
           const collector = l.createReactionCollector(filter, {time: 15000});
-
+            
           collector.on('collect', (r, rC) => {
               if (r.emoji.name === "◀")
               {
@@ -200,11 +278,8 @@ c.on("message", async m => {
                   {
                       curPage = curPage - 1;
                   }
-                  else
-                  {
-                      embed = changelogs(curPage);
-                      l.edit({embed});
-                  }
+                  embed = changelogs(curPage);
+                  l.edit({embed});
               }
               else if (r.emoji.name === "▶")
               {
@@ -212,17 +287,13 @@ c.on("message", async m => {
                   {
                       curPage = curPage + 1;
                   }
-                  else
-                  {
-                      embed = changelogs(curPage);
-                      l.edit({embed});
-                  }
+                  embed = changelogs(curPage);
+                  l.edit({embed});
               }
-              else
+              else if (r.emoji.name === "❌")
               {
-                  
+                collector.stop();
               }
-              collector.stop();
           });
       }
 
