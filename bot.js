@@ -236,8 +236,7 @@ c.on("message", async m => {
           const totalGuilds = c.guilds.size;
           const members = c.users.size;
 
-          const msg = `**Thank you for entertaining Tohsaka!**
-                      \n
+          const msg = `**Thank you for entertaining Tohsaka!**\n
                       \n**Tohsaka Rin Version:** ${version}
                       \n
                       \nTohsaka Rin is a discord bot owned by **${c.users.get(config.devid).username}#${c.users.get(config.devid).discriminator}** and designed for **${guild}** guild **only**.
@@ -245,7 +244,7 @@ c.on("message", async m => {
                       You cannot invite Tohsaka Rin to your own server.
                       \n
                       \nTohsaka Rin is an open-source project. 
-                      You can check our the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the main server at https://discord.gg/hMnStJE`;
+                      You can check the GitHub repository at https://github.com/EndNation/Tohsaka-Rin and join the main server at https://discord.gg/hMnStJE`;
           m.channel.send(msg);
       }
 
