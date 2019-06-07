@@ -551,7 +551,7 @@ c.on("message", async m => {
       {
           const devCmds = "**__Developer Commands:__**\n**rin!shutdown** - Restarts all of the bot shards.\n**rin!eval** - Evaluates the arguments given.";
           const modCmds = "**__Server Management Commands:__**\n**rin!kick __@user__ __reason__** - Kicks the mentioned user for the reason specified.\n**rin!ban __@user__ __reason__** - Bans the mentioned user for the reason specified.\n**rin!purge __(no of msgs to be deleted)__** - Deletes the number of messages specified in the channel.";
-          const cmds = "**__General Commands:__**\n**rin!help** - Shows all available commands for the bot.\n**rin!ping** - Pong.\n**rin!changelogs** - Shows all the changes made to the bot.\n**rin!about** - The abouts of the bot";
+          const cmds = "**__General Commands:__**\n**rin!help** - Shows all available commands for the bot.\n**rin!ping** - Pong.\n**rin!changelogs** - Shows all the changes made to the bot.\n**rin!about** - The abouts of the bot\n**rin!stats** - Statistics of the bot.";
           const embed = {
               "description": "**Tohsaka Rin commands:**\n\n" + devCmds + "\n\n" + modCmds + "\n\n" + cmds,
               "color": 6308886,
