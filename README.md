@@ -3,10 +3,13 @@
 ## Changes:
 -----
 
-### Latest Version (v1.4.0):
--   Added restart command. Only for developer.
+### Latest Version (v1.6.0):
+-   Added stats command to look at the stats of the bot.
 
 ### Other Versions:
+
+### v1.5.0:
+-   Added pages to changelogs and some more moderation on member joining the guild.
 
 ### v1.4.0:
 -   Added bot logging to all moderation commands.

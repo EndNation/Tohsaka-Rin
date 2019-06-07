@@ -1,11 +1,13 @@
 const discord = require("discord.js");
+const sysinfo = require("systeminformation");
+const cunit = require("convert-units");
 
 const c = new discord.Client();
 
 const config = require("./config.json");
 const blists = require("./bannedlists.json");
 
-const version = "1.5.0";
+const version = "1.6.0";
 
 function clean(t)
 {
@@ -203,6 +205,10 @@ function changelogs(curPage)
       },
       "fields": [
         {
+          "name": "Version 1.6.0",
+          "value":  "Added stats command to look at the stats of the bot."
+        },
+        {
           "name": "Version 1.5.0",
           "value":  "- Added pages to changelogs and some more moderation on member joining the guild."
         }
@@ -220,6 +226,46 @@ c.on("message", async m => {
     {
       const args = m.content.slice(config.prefix.length).trim().split(/ +/g);
       const cmd = args.shift().toLowerCase();
+
+      if (cmd === "stats")
+      {
+        let ramUsage = 0;
+        sysinfo.mem().then(data => {
+          ramUsage = (cunit(data["used"]).from('b').to("GB")).toFixed(2);
+          const embed = {
+            "color": 6077743,
+            "timestamp": new Date(),
+            "footer": {
+              "icon_url": c.user.avatarURL,
+              "text": "Made by TheDarkSid3r"
+            },
+            "author": {
+              "name": "Scathach - Statistics",
+              "icon_url": c.user.avatarURL
+            },
+            "fields": [
+              {
+                "name": "Memory Usage:",
+                "value": `${ramUsage} GB`
+              },
+              {
+                "name": "Users:",
+                "value": c.users.size
+              },
+              {
+                "name": "Servers:",
+                "value": c.guilds.size
+              },
+              {
+                "name": "Channels:",
+                "value": c.channels.size
+              }
+            ]
+          };
+
+          m.reply({embed});
+        }).catch(err => console.error(err));
+      }
 
       if (cmd === "ping")
       {
