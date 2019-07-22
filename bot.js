@@ -240,7 +240,7 @@ c.on("message", async m => {
               "text": "Made by TheDarkSid3r"
             },
             "author": {
-              "name": "Scathach - Statistics",
+              "name": "Tohsaka Rin - Statistics",
               "icon_url": c.user.avatarURL
             },
             "fields": [
