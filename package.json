@@ -19,6 +19,6 @@
   "dependencies": {
     "convert-units": "^2.3.4",
     "discord.js": "^11.5.0",
-    "systeminformation": "^4.9.0"
+    "systeminformation": "^5.3.1"
   }
 }
